@@ -75,7 +75,7 @@ body {
     font-family: "Lucida Handwriting", cursive;
     font-size: 18px;
     color: #333;
-    min-width: 0;             
+    min-width: 0;
     white-space: nowrap;
 }
 
@@ -133,7 +133,7 @@ body {
 
     .expense-name,
     .expense-amount {
-        font-size: 14px;   
+        font-size: 14px;
     }
 
     .expense-amount {
@@ -148,5 +148,4 @@ body {
         width: 100%;
         font-size: 15px;
     }
-}
 }
