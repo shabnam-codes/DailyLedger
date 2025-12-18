@@ -29,4 +29,10 @@ html2canvas – Capturing and saving the diary page as an image
 3. Improving user experience with keyboard navigation    
 4. Using third-party libraries like html2canvas effectively    
 5. Debugging layout issues caused by fixed heights and dynamic content   
-6. Structuring code for better readability and maintainability    
+6. Structuring code for better readability and maintainability
+
+##Demo 
+
+https://github.com/user-attachments/assets/eec8a16b-bee9-4fde-a023-9797700bbeeb
+
+### Output <img width="2420" height="1580" alt="Daily_Expenditure_2025-12-17" src="https://github.com/user-attachments/assets/683f6812-f203-4fda-bd88-264e4b30c8c9" />
