@@ -52,11 +52,10 @@
             <input type="text" class="expense-amount" placeholder="₹" inputmode="numeric" />
         </div>
         <div id="total-text" class="total-text"></div>
-        <div class="button-group">
-            <button class="button" onclick="takeshot()">Save Page</button>
-            <button class="button" onclick="sharePage()">Share Page</button>
-        </div>
-
+        <div>
+        <button class="button" onclick="takeshot()">
+                Save Page
+        </button>
         <script>
         function takeshot() {
             const btn = document.querySelector(".button");
@@ -76,6 +75,7 @@
             const total = calculateTotal();
             totalText.textContent = `Total: ₹${total.toFixed(2)}`;
 
+            // hide empty rows ONLY for screenshot
             const hiddenRows = [];
             rows.forEach(row => {
                 const name = row.querySelector(".expense-name").value.trim();
@@ -171,7 +171,8 @@
 
             line.innerHTML = `
             <input type="text" class="expense-name" placeholder="Expense Name">
-            <input type="text" class="expense-amount" placeholder="₹" inputmode="numeric">`;
+            <input type="text" class="expense-amount" placeholder="₹" inputmode="numeric">
+        `;
 
             // insert BEFORE total text
             const totalText = document.getElementById("total-text");
@@ -197,64 +198,8 @@
                 }
             }
         });
-        async function sharePage() {
-            const diary = document.querySelector(".diary-page");
-            const dateInput = document.getElementById("event-date");
-            const dateLabel = document.querySelector(".date-label");
-            const dateText = document.getElementById("date-text");
-            const totalText = document.getElementById("total-text");
-            const buttons = document.querySelectorAll(".button");
 
-            if (!dateInput.value) {
-                alert("Please select a date first");
-                return;
-            }
-
-            // Prepare screenshot view
-            dateText.textContent = `Date: ${dateInput.value}`;
-            dateText.style.display = "block";
-            dateInput.style.display = "none";
-            dateLabel.style.display = "none";
-
-            const total = calculateTotal();
-            totalText.textContent = `Total: ₹${total.toFixed(2)}`;
-            totalText.style.display = "block";
-
-            buttons.forEach(btn => btn.style.display = "none");
-
-            // Take screenshot
-            const canvas = await html2canvas(diary, { scale: 2 });
-
-            // Restore UI
-            buttons.forEach(btn => btn.style.display = "inline-flex");
-            dateInput.style.display = "inline-block";
-            dateLabel.style.display = "inline-block";
-            dateText.style.display = "none";
-
-            // Convert to file
-            canvas.toBlob(async (blob) => {
-                const file = new File(
-                    [blob],
-                    `Daily_Expenditure_${dateInput.value}.png`,
-                    { type: "image/png" }
-                );
-
-                if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                    await navigator.share({
-                        title: "Daily Budget Tracker",
-                        text: "Here is my daily expense record 👇",
-                        files: [file],
-                        url: window.location.href
-                    });
-                } else {
-                    alert("Sharing not supported on this browser. Please download and share manually.");
-                }
-            });
-        }
-        </script>
+            </script>
         </div>
 </body>
-</html>
-
-
 </html>
