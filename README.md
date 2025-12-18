@@ -1,4 +1,4 @@
-# DailyLedger
+# DailyLedger📒
 
 A simple web-based diary to record daily expenses and save them as a clean, formatted snapshot.
 
@@ -24,12 +24,12 @@ html2canvas – Capturing and saving the diary page as an image
 
 ## What I Learned
 
-1. Managing dynamic DOM elements using JavaScript    
-2. Handling real-time calculations and user input events    
-3. Improving user experience with keyboard navigation    
-4. Using third-party libraries like html2canvas effectively    
-5. Debugging layout issues caused by fixed heights and dynamic content   
-6. Structuring code for better readability and maintainability
+1️⃣Managing dynamic DOM elements using JavaScript    
+2️⃣ Handling real-time calculations and user input events     
+3️⃣Improving user experience with keyboard navigation     
+4️⃣Using third-party libraries like html2canvas effectively    
+5️⃣Debugging layout issues caused by fixed heights and dynamic content     
+6️⃣Structuring code for better readability and maintainability
 
 ##Demo 
 
