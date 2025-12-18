@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Budget Tracker</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+</head>
+
+<body>
+    <div class="diary-page">
+        <header>
+            <h1 id="page-title">Daily Expenenditure</h1>
+            <div class="date-area">
+                <label for="event-date" class="date-label">Select a Date:</label>
+                <input type="date" id="event-date" class="date-input">
+                <div id="date-text" class="date-text"></div>
+            </div>
+        </header>
+        <div class="line">
+            <input type="text" class="expense-name" placeholder="Expense Name" required>
+            <input type="text" class="expense-amount" placeholder="₹" inputmode="numeric" />
+        </div>
+        <div class="line">
+            <input type="text" class="expense-name" placeholder="Expense Name" required />
+            <input type="text" class="expense-amount" placeholder="₹" inputmode="numeric" />
+        </div>
+        <div class="line">
+            <input type="text" class="expense-name" placeholder="Expense Name" required />
+            <input type="text" class="expense-amount" placeholder="₹" inputmode="numeric" />
+        </div>
+        <div class="line">
+            <input type="text" class="expense-name" placeholder="Expense Name" required />
+            <input type="text" class="expense-amount" placeholder="₹" inputmode="numeric" />
+        </div>
+        <div class="line">
+            <input type="text" class="expense-name" placeholder="Expense Name" required />
+            <input type="text" class="expense-amount" placeholder="₹" inputmode="numeric" />
+        </div>
+        <div class="line">
+            <input type="text" class="expense-name" placeholder="Expense Name" required />
+            <input type="text" class="expense-amount" placeholder="₹" inputmode="numeric" />
+        </div>
+        <div class="line">
+            <input type="text" class="expense-name" placeholder="Expense Name" required />
+            <input type="text" class="expense-amount" placeholder="₹" inputmode="numeric" />
+        </div>
+        <div class="line">
+            <input type="text" class="expense-name" placeholder="Expense Name" required />
+            <input type="text" class="expense-amount" placeholder="₹" inputmode="numeric" />
+        </div>
+        <div id="total-text" class="total-text"></div>
+        <div>
+        <button class="button" onclick="takeshot()">
+                Save Page
+        </button>
+        <script>
+        function takeshot() {
+            const btn = document.querySelector(".button");
+            const dateInput = document.getElementById("event-date");
+            const dateLabel = document.querySelector(".date-label");
+            const dateText = document.getElementById("date-text");
+            const totalText = document.getElementById("total-text");
+            const rows = document.querySelectorAll(".line");
+
+            if (!dateInput.value) {
+                alert("Please select a date first");
+                return;
+            }
+
+            dateText.textContent = `Date: ${dateInput.value}`;
+
+            const total = calculateTotal();
+            totalText.textContent = `Total: ₹${total.toFixed(2)}`;
+
+            // hide empty rows ONLY for screenshot
+            const hiddenRows = [];
+            rows.forEach(row => {
+                const name = row.querySelector(".expense-name").value.trim();
+                const amount = row.querySelector(".expense-amount").value.trim();
+
+                if (!name && !amount) {
+                    hiddenRows.push(row);
+                    row.style.display = "none";
+                }
+            });
+
+            btn.style.display = "none";
+            dateInput.style.display = "none";
+            dateLabel.style.display = "none";
+            dateText.style.display = "block";
+
+            html2canvas(document.querySelector(".diary-page"), { scale: 2 })
+                .then(canvas => {
+                    const link = document.createElement("a");
+                    link.download = `Daily_Expenditure_${dateInput.value}.png`;
+                    link.href = canvas.toDataURL("image/png");
+                    link.click();
+
+                    // restore UI exactly as before
+                    btn.style.display = "block";
+                    dateInput.style.display = "inline-block";
+                    dateLabel.style.display = "inline-block";
+                    dateText.style.display = "none";
+
+                    hiddenRows.forEach(row => row.style.display = "flex");
+                });
+        }
+
+        function calculateTotal() {
+            const inputs = document.querySelectorAll(".expense-amount");
+            let values = [];
+
+            inputs.forEach(input => {
+                const v = parseFloat(input.value);
+                if (!isNaN(v)) {
+                    values.push(v);
+                }
+            });
+
+            return values.reduce((sum, v) => sum + v, 0);
+        }
+        function updateTotal() {
+            const total = calculateTotal();
+            document.getElementById("total-text").textContent =
+                `Total: ₹${total.toFixed(2)}`;
+        }
+        document.addEventListener("input", function (e) {
+            if (e.target.classList.contains("expense-amount")) {
+                updateTotal();
+            }
+        });
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Enter" && e.target.classList.contains("expense-name")) {
+                e.preventDefault();
+
+                const nameInputs = Array.from(
+                    document.querySelectorAll(".expense-name")
+                );
+                const amountInputs = Array.from(
+                    document.querySelectorAll(".expense-amount")
+                );
+
+                const index = nameInputs.indexOf(e.target);
+                if (amountInputs[index]) {
+                    amountInputs[index].focus();
+                }
+            }
+        });
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Enter" && e.target.classList.contains("expense-amount")) {
+                e.preventDefault();
+
+                const amounts = Array.from(document.querySelectorAll(".expense-amount"));
+                const names = Array.from(document.querySelectorAll(".expense-name"));
+
+                const index = amounts.indexOf(e.target);
+                if (names[index + 1]) {
+                    names[index + 1].focus();
+                }
+            }
+        });
+        function addNewLine() {
+            const diary = document.querySelector(".diary-page");
+
+            const line = document.createElement("div");
+            line.className = "line";
+            line.style.display = "flex";
+
+            line.innerHTML = `
+            <input type="text" class="expense-name" placeholder="Expense Name">
+            <input type="text" class="expense-amount" placeholder="₹" inputmode="numeric">
+        `;
+
+            // insert BEFORE total text
+            const totalText = document.getElementById("total-text");
+            diary.insertBefore(line, totalText);
+        }
+
+        document.addEventListener("input", function (e) {
+            if (
+                e.target.classList.contains("expense-name") ||
+                e.target.classList.contains("expense-amount")
+            ) {
+                const rows = Array.from(document.querySelectorAll(".line"));
+
+                const allFilled = rows.every(row => {
+                    const name = row.querySelector(".expense-name").value.trim();
+                    const amount = row.querySelector(".expense-amount").value.trim();
+                    return name && amount;
+                });
+
+                // add new line ONLY if last row is filled
+                if (allFilled) {
+                    addNewLine();
+                }
+            }
+        });
+
+            </script>
+        </div>
+</body>
+
+</html>
